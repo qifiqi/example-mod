@@ -1,0 +1,8 @@
+{
+    "parent": "minecraft:block/cube_bottom_top",
+    "textures": {
+        "top": "symmetrycraft:block/symmetry_forge_top",
+        "side": "symmetrycraft:block/symmetry_forge_side",
+        "bottom": "symmetrycraft:block/symmetry_forge_bottom"
+    }
+}

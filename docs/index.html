@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>对称工艺 SymmetryCraft · Minecraft 1.20.1 Forge 模组</title>
+<style>
+  :root {
+    --bg: #0d1220;
+    --bg-soft: #131a2c;
+    --panel: #171f33;
+    --line: #26314b;
+    --text: #dfe8f5;
+    --muted: #8b97ad;
+    --cyan: #3fcfff;
+    --purple: #7b5cff;
+    --cyan-dim: rgba(63, 207, 255, 0.14);
+    --purple-dim: rgba(123, 92, 255, 0.14);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Microsoft YaHei UI", "Microsoft YaHei", "PingFang SC", "Noto Sans SC", sans-serif;
+    line-height: 1.75;
+    font-size: 16px;
+  }
+  ::selection { background: var(--cyan); color: #06121c; }
+
+  /* ---------- 顶部导航：左右对称 ---------- */
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(13, 18, 32, 0.88);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner {
+    max-width: 1080px; margin: 0 auto; padding: 0 24px;
+    display: flex; align-items: center; justify-content: space-between; height: 58px;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; color: var(--text); text-decoration: none; }
+  .brand img { width: 28px; height: 28px; image-rendering: pixelated; }
+  .brand .zh { color: var(--cyan); }
+  .nav-links { display: flex; gap: 4px; }
+  .nav-links a {
+    color: var(--muted); text-decoration: none; font-size: 14px;
+    padding: 6px 12px; border-radius: 8px; transition: all .18s;
+  }
+  .nav-links a:hover { color: var(--cyan); background: var(--cyan-dim); }
+
+  /* ---------- Hero：中轴对称 ---------- */
+  header {
+    padding: 84px 24px 64px;
+    text-align: center;
+    background:
+      radial-gradient(ellipse 900px 380px at 50% -10%, rgba(63,207,255,0.13), transparent 65%),
+      radial-gradient(ellipse 700px 320px at 50% 110%, rgba(123,92,255,0.12), transparent 65%);
+    border-bottom: 1px solid var(--line);
+  }
+  header img.logo { width: 96px; height: 96px; image-rendering: pixelated; border-radius: 18px; }
+  .diamond-row { color: var(--cyan); letter-spacing: 14px; font-size: 12px; margin: 18px 0 10px; opacity: .9; }
+  h1 { font-size: 40px; letter-spacing: 2px; }
+  h1 .en { color: var(--cyan); }
+  .tagline { margin-top: 10px; color: var(--muted); font-size: 17px; }
+  .tagline b { color: var(--text); font-weight: 600; }
+  .badges { margin-top: 26px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .badge {
+    font-size: 13px; padding: 5px 14px; border-radius: 999px;
+    border: 1px solid var(--line); background: var(--bg-soft); color: var(--muted);
+  }
+  .badge b { color: var(--cyan); font-weight: 600; }
+  .cta { margin-top: 30px; display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .btn {
+    display: inline-block; padding: 10px 26px; border-radius: 10px; text-decoration: none;
+    font-size: 15px; font-weight: 600; transition: all .18s;
+  }
+  .btn.primary { background: linear-gradient(135deg, var(--cyan), var(--purple)); color: #071018; }
+  .btn.primary:hover { filter: brightness(1.12); transform: translateY(-1px); }
+  .btn.ghost { border: 1px solid var(--line); color: var(--text); }
+  .btn.ghost:hover { border-color: var(--cyan); color: var(--cyan); }
+
+  /* ---------- 版块 ---------- */
+  main { max-width: 1080px; margin: 0 auto; padding: 0 24px 80px; }
+  section { padding-top: 56px; }
+  h2 {
+    text-align: center; font-size: 26px; letter-spacing: 1px; margin-bottom: 6px;
+  }
+  h2::before, h2::after { content: "◆"; color: var(--cyan); font-size: 13px; vertical-align: middle; margin: 0 14px; opacity: .85; }
+  .section-sub { text-align: center; color: var(--muted); margin-bottom: 34px; font-size: 15px; }
+
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .grid.triple { grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 760px) { .grid, .grid.triple { grid-template-columns: 1fr; } }
+
+  .card {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 24px 26px;
+    transition: all .18s; position: relative; overflow: hidden;
+  }
+  .card:hover { border-color: var(--cyan); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,.35); }
+  .card::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--cyan), var(--purple), var(--cyan));
+    opacity: 0; transition: opacity .18s;
+  }
+  .card:hover::before { opacity: 1; }
+  .card h3 { font-size: 17px; margin-bottom: 8px; color: var(--cyan); }
+  .card p { color: var(--muted); font-size: 14.5px; }
+  .card .num {
+    position: absolute; top: 14px; right: 18px; font-size: 30px; font-weight: 800;
+    color: rgba(63,207,255,.10); user-select: none;
+  }
+
+  /* ---------- 材质展示 ---------- */
+  .tex-row { display: flex; justify-content: center; align-items: flex-end; gap: 40px; flex-wrap: wrap; }
+  .tex-item { text-align: center; }
+  .tex-item img { width: 96px; height: 96px; image-rendering: pixelated; border-radius: 10px; border: 1px solid var(--line); background: #0a0e18; padding: 12px; }
+  .tex-item figcaption { margin-top: 10px; color: var(--muted); font-size: 13.5px; }
+  .sym-note { text-align: center; margin-top: 22px; color: var(--muted); font-size: 14px; }
+  .sym-note code { color: var(--cyan); }
+
+  /* ---------- 锻炉 GUI 复刻（对称） ---------- */
+  .gui-demo {
+    margin: 0 auto; width: 320px; background: #262b36; border: 1px solid #10141f;
+    border-radius: 10px; padding: 18px 0 20px; box-shadow: 0 10px 34px rgba(0,0,0,.4);
+  }
+  .gui-title { text-align: center; color: var(--cyan); font-size: 14px; letter-spacing: 2px; margin-bottom: 14px; }
+  .slots { display: flex; justify-content: center; }
+  .slot {
+    width: 52px; height: 52px; background: #161a24;
+    border: 2px solid #4a5266; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 3px;
+  }
+  .slot.core { border-color: var(--cyan); box-shadow: 0 0 12px rgba(63,207,255,.35); }
+  .slot img { width: 30px; height: 30px; image-rendering: pixelated; }
+  .slot .plus { color: var(--muted); font-size: 20px; line-height: 1; }
+  .slot .eq { color: var(--muted); font-size: 20px; line-height: 1; }
+  .slot-labels { display: flex; justify-content: center; gap: 0; margin-top: 8px; }
+  .slot-labels span { width: 56px; text-align: center; font-size: 13px; color: var(--muted); }
+  .slot-labels span.core { color: var(--cyan); }
+  .gui-formula { text-align: center; margin-top: 16px; color: var(--text); font-size: 15px; }
+  .gui-formula b { color: var(--cyan); }
+
+  /* ---------- 表格 ---------- */
+  table { width: 100%; border-collapse: collapse; background: var(--panel); border-radius: 12px; overflow: hidden; font-size: 14.5px; }
+  th, td { padding: 12px 18px; text-align: left; border-bottom: 1px solid var(--line); }
+  th { background: var(--bg-soft); color: var(--cyan); font-weight: 600; letter-spacing: .5px; }
+  tr:last-child td { border-bottom: none; }
+  td { color: var(--muted); }
+  td b { color: var(--text); }
+  code.inline {
+    background: var(--bg-soft); border: 1px solid var(--line); border-radius: 6px;
+    padding: 1px 7px; font-size: 13px; color: var(--cyan);
+    font-family: Consolas, "Courier New", monospace;
+  }
+  .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; }
+
+  /* ---------- 代码块 ---------- */
+  pre {
+    background: #0a0e18; border: 1px solid var(--line); border-radius: 12px;
+    padding: 18px 22px; overflow-x: auto; font-size: 13.5px; line-height: 1.7;
+    font-family: Consolas, "Courier New", monospace; color: #b8c6dd;
+  }
+  pre .c { color: #5d6b85; }
+  pre .k { color: var(--cyan); }
+  pre .p { color: var(--purple); }
+
+  /* ---------- 步骤 ---------- */
+  .steps { counter-reset: step; }
+  .step {
+    position: relative; background: var(--panel); border: 1px solid var(--line);
+    border-radius: 12px; padding: 18px 22px 18px 66px; margin-bottom: 14px;
+  }
+  .step::before {
+    counter-increment: step; content: counter(step);
+    position: absolute; left: 18px; top: 18px;
+    width: 32px; height: 32px; border-radius: 8px;
+    background: linear-gradient(135deg, var(--cyan), var(--purple));
+    color: #071018; font-weight: 800; display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+  }
+  .step h4 { font-size: 15.5px; margin-bottom: 4px; }
+  .step p { color: var(--muted); font-size: 14.5px; }
+
+  .callout {
+    margin-top: 22px; padding: 16px 22px; border-radius: 12px; font-size: 14.5px;
+    background: var(--cyan-dim); border: 1px solid rgba(63,207,255,.35); color: var(--text);
+  }
+  .callout.purple { background: var(--purple-dim); border-color: rgba(123,92,255,.4); }
+  .callout b { color: var(--cyan); }
+  .callout.purple b { color: var(--purple); }
+
+  footer {
+    border-top: 1px solid var(--line); padding: 34px 24px; text-align: center; color: var(--muted); font-size: 13.5px;
+  }
+  footer .diamonds { color: var(--cyan); letter-spacing: 12px; font-size: 11px; margin-bottom: 10px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="brand" href="#top">
+      <img src="assets/icon.png" alt="logo">
+      <span><span class="zh">对称工艺</span> SymmetryCraft</span>
+    </a>
+    <div class="nav-links">
+      <a href="#features">特性</a>
+      <a href="#textures">材质</a>
+      <a href="#forge">对称锻炉</a>
+      <a href="#optimizer">帧数优化</a>
+      <a href="#install">安装</a>
+      <a href="#dev">开发</a>
+      <a href="#faq">FAQ</a>
+    </div>
+  </div>
+</nav>
+
+<header id="top">
+  <img class="logo" src="assets/icon.png" alt="SymmetryCraft 图标">
+  <div class="diamond-row">◆ ◆ ◆</div>
+  <h1><span class="zh">对称工艺</span> <span class="en">SymmetryCraft</span></h1>
+  <p class="tagline">独立材质 · 独立UI · 针对本机的<b>帧数优化</b> —— 一切围绕中轴对称</p>
+  <div class="badges">
+    <span class="badge">Minecraft <b>1.20.1</b></span>
+    <span class="badge">Forge <b>47.4.10</b></span>
+    <span class="badge">Java <b>17</b></span>
+    <span class="badge">版本 <b>1.0.0</b></span>
+    <span class="badge">作者 <b>fuqing</b></span>
+  </div>
+  <div class="cta">
+    <a class="btn primary" href="#install">立即安装</a>
+    <a class="btn ghost" href="#forge">了解对称锻炉</a>
+  </div>
+</header>
+
+<main>
+
+  <!-- ================= 特性 ================= -->
+  <section id="features">
+    <h2>核心特性</h2>
+    <p class="section-sub">六个特性，左右呼应，恰成对称</p>
+    <div class="grid triple">
+      <div class="card"><span class="num">01</span>
+        <h3>独立材质</h3>
+        <p>全部像素材质由 <code class="inline">tools/gen_textures.py</code> 程序化生成，不依赖任何原版贴图，风格自成一派：深板岩底 + 水晶青 + 辉光白。</p>
+      </div>
+      <div class="card"><span class="num">02</span>
+        <h3>独立 UI</h3>
+        <p>对称锻炉界面、优化设置界面、性能 HUD 三套界面全部由模组自定义绘制，深色主题与模组材质同源。</p>
+      </div>
+      <div class="card"><span class="num">03</span>
+        <h3>帧数优化</h3>
+        <p>粒子距离剔除 + 粒子总量上限 + 生物渲染距离裁剪 + 雾效减弱，按你电脑的性能自由调参，预设一键切换。</p>
+      </div>
+      <div class="card"><span class="num">04</span>
+        <h3>对称美学</h3>
+        <p>每一张贴图强制通过左右镜像校验；界面元素围绕中轴等距分布；连配方图案都是对称的十字与环形。</p>
+      </div>
+      <div class="card"><span class="num">05</span>
+        <h3>可玩性保障</h3>
+        <p>完整生存链路：挖水晶 → 合成锻炉 → 镜像复制物品。方块掉落、NBT 持久化、破坏掉落内容物一应俱全。</p>
+      </div>
+      <div class="card"><span class="num">06</span>
+        <h3>独立创造标签</h3>
+        <p>创造模式物品栏拥有独立的「对称工艺」标签页，所有内容一目了然，不与原版或其他模组混杂。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 材质 ================= -->
+  <section id="textures">
+    <h2>独立材质</h2>
+    <p class="section-sub">程序化像素画 · 强制镜像对称校验</p>
+    <div class="tex-row">
+      <figure class="tex-item">
+        <img src="assets/item_crystal.png" alt="对称水晶">
+        <figcaption>对称水晶<br>八面菱晶</figcaption>
+      </figure>
+      <figure class="tex-item">
+        <img src="assets/block_crystal.png" alt="对称水晶块">
+        <figcaption>对称水晶块<br>四晶拱心</figcaption>
+      </figure>
+      <figure class="tex-item">
+        <img src="assets/forge_side.png" alt="对称锻炉">
+        <figcaption>对称锻炉<br>核心菱晶</figcaption>
+      </figure>
+    </div>
+    <p class="sym-note">
+      生成脚本内置校验：任意一行像素若不满足 <code>pixel(x) == pixel(W-1-x)</code>（左右镜像），
+      16×16 材质还要求上下镜像，校验失败直接报错退出 —— 对称不是约定，是断言。
+    </p>
+  </section>
+
+  <!-- ================= 对称锻炉 ================= -->
+  <section id="forge">
+    <h2>对称锻炉</h2>
+    <p class="section-sub">模组的核心功能方块：以对称之力，复制万物</p>
+
+    <div class="gui-demo">
+      <div class="gui-title">◆ 对 称 锻 炉 ◆</div>
+      <div class="slots">
+        <div class="slot"><span class="plus">＋</span></div>
+        <div class="slot core"><img src="assets/item_crystal.png" alt="水晶"></div>
+        <div class="slot"><span class="eq">＝</span></div>
+      </div>
+      <div class="slot-labels">
+        <span>材料</span><span class="core">水晶</span><span>镜像</span>
+      </div>
+      <div class="gui-formula">1 份材料 ＋ 1 枚水晶 ＝ <b>2 份镜像成品</b></div>
+    </div>
+
+    <div style="height:26px"></div>
+
+    <div class="steps">
+      <div class="step">
+        <h4>合成对称水晶</h4>
+        <p>工作台十字形排列：上下左右 4 枚<b>紫水晶碎片</b> + 正中央 1 个<b>青金石</b> → 2 枚对称水晶。配方图案本身就是完美对称的十字。</p>
+      </div>
+      <div class="step">
+        <h4>合成对称锻炉</h4>
+        <p>3×3 环形配方：四角 4 个<b>对称水晶块</b>（2×2 水晶合成）、四边 4 块<b>平滑石头</b>、正中央 1 颗<b>钻石</b>。环形对称，缺一不可。</p>
+      </div>
+      <div class="step">
+        <h4>放置并右键打开</h4>
+        <p>将锻炉放置在地面上，右键打开对称工作界面。左侧放入任意可堆叠材料，中槽放入对称水晶。</p>
+      </div>
+      <div class="step">
+        <h4>取出镜像成品</h4>
+        <p>右侧「镜像」槽会实时预览双倍成品；取出的瞬间消耗 1 材料 + 1 水晶。Shift+点击可快速搬运。锻炉内物品会保存，挖掘时自动掉落。</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <b>配方速查</b>：水晶块 = 2×2 水晶；水晶块反过来分解 = 4 水晶。对称锻炉需要 4 水晶块 + 4 平滑石头 + 1 钻石。
+    </div>
+  </section>
+
+  <!-- ================= 优化器 ================= -->
+  <section id="optimizer">
+    <h2>帧数优化器</h2>
+    <p class="section-sub">游戏内按 <code class="inline">O</code> 键随时打开 · 三档预设一键适配你的电脑</p>
+
+    <div class="grid">
+      <div class="card">
+        <h3>⚡ 粒子距离剔除</h3>
+        <p>每游戏刻扫描所有存活粒子，超出设定距离（默认 32 格）的立即移除。爆炸、药水、附魔光效再密集也拖不垮帧数。</p>
+      </div>
+      <div class="card">
+        <h3>🧊 粒子总量上限</h3>
+        <p>同时存活粒子数有硬上限（默认 4096），超出时优先丢弃最旧的粒子，杜绝极端场景下的雪崩式掉帧。</p>
+      </div>
+      <div class="card">
+        <h3>🎯 生物渲染裁剪</h3>
+        <p>超出设定距离（默认 64 格）的生物直接跳过渲染，不占用 GPU 与绘制调用。刷怪塔、大型牧场帧数显著提升。</p>
+      </div>
+      <div class="card">
+        <h3>🌫 雾效减弱（可选）</h3>
+        <p>把雾面向远处推移 1.5 倍，远景更通透。默认关闭，低配电脑开启后配合高视距更舒服。</p>
+      </div>
+    </div>
+
+    <div style="height:26px"></div>
+
+    <h2 style="font-size:20px">三档预设</h2>
+    <p class="section-sub">设置界面顶部 · 围绕中轴等距排列的三枚按钮</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>预设</th><th>粒子剔除距离</th><th>粒子上限</th><th>生物渲染距离</th><th>雾效减弱</th><th>适用</th></tr>
+        <tr><td><b>低配电脑</b></td><td>12 格</td><td>800</td><td>24 格</td><td>开</td><td>核显 / 老电脑</td></tr>
+        <tr><td><b>均衡</b>（默认）</td><td>32 格</td><td>4096</td><td>64 格</td><td>关</td><td>大多数电脑</td></tr>
+        <tr><td><b>高配电脑</b></td><td>64 格</td><td>8192</td><td>128 格</td><td>关</td><td>高性能独显</td></tr>
+      </table>
+    </div>
+
+    <div class="callout">
+      <b>对称 HUD</b>：开启后屏幕顶部居中显示 <code class="inline">FPS ◆ 粒子</code> 性能胶囊，左右文字关于中央菱形完全对称分布，随时掌握优化效果。
+    </div>
+    <div class="callout purple">
+      <b>配置文件</b>：所有参数保存在 <code class="inline">.minecraft/config/symmetrycraft-optimizer.toml</code>，界面内调整即时生效并自动保存。
+    </div>
+  </section>
+
+  <!-- ================= 安装 ================= -->
+  <section id="install">
+    <h2>安装方法</h2>
+    <p class="section-sub">与你的 PCL2 启动器 + Forge 47.4.10 完全匹配</p>
+    <div class="steps">
+      <div class="step">
+        <h4>确认游戏版本</h4>
+        <p>Minecraft <b>1.20.1</b> + Forge <b>47.4.10</b>（你的启动器已装好，与模组开发版本完全一致）。</p>
+      </div>
+      <div class="step">
+        <h4>获取模组文件</h4>
+        <p>构建产物位于项目的 <code class="inline">build/libs/symmetrycraft-1.0.0.jar</code>（执行 <code class="inline">gradlew build</code> 生成）。</p>
+      </div>
+      <div class="step">
+        <h4>放入 mods 文件夹</h4>
+        <p>把 jar 复制到 <code class="inline">.minecraft/mods/</code> 目录（PCL2 版本文件夹内）。</p>
+      </div>
+      <div class="step">
+        <h4>启动游戏</h4>
+        <p>启动后主界面点击「模组」应能看到 <b>对称工艺 SymmetryCraft</b>。创造模式物品栏找「对称工艺」标签页，或按 <code class="inline">O</code> 打开优化设置。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 开发 ================= -->
+  <section id="dev">
+    <h2>开发与构建</h2>
+    <p class="section-sub">项目结构对称清晰，二次开发友好</p>
+    <pre><span class="c"># 编译出可安装的 jar（build/libs/symmetrycraft-1.0.0.jar）</span>
+gradlew build
+
+<span class="c"># 开发环境直接启动游戏客户端</span>
+gradlew runClient
+
+<span class="c"># 重新生成全部对称材质（自带镜像校验）</span>
+python tools/gen_textures.py</pre>
+
+    <div style="height:22px"></div>
+    <div class="table-wrap">
+      <table>
+        <tr><th>路径</th><th>说明</th></tr>
+        <tr><td><code class="inline">blockentity/ + inventory/</code></td><td>对称锻炉的方块实体与容器菜单（镜像三槽逻辑）</td></tr>
+        <tr><td><code class="inline">client/</code></td><td>锻炉界面、优化设置界面、HUD、优化器、按键</td></tr>
+        <tr><td><code class="inline">config/</code></td><td>优化器 ForgeConfigSpec（客户端配置）</td></tr>
+        <tr><td><code class="inline">resources/META-INF/accesstransformer.cfg</code></td><td>公开粒子表 —— 无 Mixin，兼容性优先</td></tr>
+        <tr><td><code class="inline">tools/gen_textures.py</code></td><td>材质生成器（纯标准库，带对称断言）</td></tr>
+        <tr><td><code class="inline">docs/</code></td><td>本站点源文件</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- ================= FAQ ================= -->
+  <section id="faq">
+    <h2>常见问题</h2>
+    <p class="section-sub">左右开弓，一一化解</p>
+    <div class="grid">
+      <div class="card">
+        <h3>Q · 和 OptiFine 冲突吗？</h3>
+        <p>不依赖、不覆盖 OptiFine 的任何功能，粒子优化通过 Forge 事件与访问转换器实现，无 Mixin，绝大多数环境可共存。</p>
+      </div>
+      <div class="card">
+        <h3>Q · 优化会影响游戏画面吗？</h3>
+        <p>粒子剔除只移除远处粒子，近处效果完全不变；生物裁剪表现为远处生物不可见（走近即恢复）。所有距离都可调，调到 128 格几乎无感。</p>
+      </div>
+      <div class="card">
+        <h3>Q · 镜像复制会不会太强？</h3>
+        <p>每次复制消耗 1 枚对称水晶（4 紫水晶 + 1 青金石合成 2 枚），属于生存中后期可用的高性价比玩法，单机或与朋友开服都适用。</p>
+      </div>
+      <div class="card">
+        <h3>Q · 服务器能用吗？</h3>
+        <p>可以。锻炉逻辑在服务端运行，优化器为纯客户端功能 —— 服务端装不装都不影响玩家的帧数优化。</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="diamonds">◆ ◆ ◆ ◆ ◆</div>
+  对称工艺 SymmetryCraft 1.0.0 · Minecraft 1.20.1 · Forge 47.4.10 · 为 fuqing 而作<br>
+  左右对称，帧数安定。
+</footer>
+
+</body>
+</html>

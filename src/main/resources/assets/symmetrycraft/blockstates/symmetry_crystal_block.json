@@ -1,0 +1,5 @@
+{
+    "variants": {
+        "": { "model": "symmetrycraft:block/symmetry_crystal_block" }
+    }
+}

@@ -1,0 +1,28 @@
+{
+    "itemGroup.symmetrycraft": "对称工艺",
+
+    "block.symmetrycraft.symmetry_crystal_block": "对称水晶块",
+    "block.symmetrycraft.symmetry_forge": "对称锻炉",
+    "item.symmetrycraft.symmetry_crystal": "对称水晶",
+
+    "gui.symmetrycraft.slot.input": "材料",
+    "gui.symmetrycraft.slot.crystal": "水晶",
+    "gui.symmetrycraft.slot.output": "镜像",
+    "gui.symmetrycraft.hint": "1 材料 + 1 水晶 = 2 镜像",
+    "gui.symmetrycraft.optimizer.title": "对称优化设置",
+    "gui.symmetrycraft.presets.low": "低配电脑",
+    "gui.symmetrycraft.presets.balanced": "均衡",
+    "gui.symmetrycraft.presets.high": "高配电脑",
+    "gui.symmetrycraft.option.particle_distance": "粒子剔除距离：%s 格",
+    "gui.symmetrycraft.option.particle_cap": "粒子上限：%s",
+    "gui.symmetrycraft.option.mob_distance": "生物渲染距离：%s 格",
+    "gui.symmetrycraft.option.reduce_fog": "减弱雾效",
+    "gui.symmetrycraft.option.show_hud": "对称HUD",
+    "gui.symmetrycraft.on": "开",
+    "gui.symmetrycraft.off": "关",
+    "gui.symmetrycraft.reset": "恢复默认",
+    "gui.symmetrycraft.stats": "本次会话已剔除粒子：%s",
+
+    "key.categories.symmetrycraft": "对称工艺",
+    "key.symmetrycraft.open_optimizer": "打开优化设置"
+}

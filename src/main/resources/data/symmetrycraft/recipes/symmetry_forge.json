@@ -1,0 +1,18 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "category": "misc",
+    "pattern": [
+        "CSC",
+        "SDS",
+        "CSC"
+    ],
+    "key": {
+        "C": { "item": "symmetrycraft:symmetry_crystal_block" },
+        "S": { "item": "minecraft:smooth_stone" },
+        "D": { "item": "minecraft:diamond" }
+    },
+    "result": {
+        "item": "symmetrycraft:symmetry_forge",
+        "count": 1
+    }
+}

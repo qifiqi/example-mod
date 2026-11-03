@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "category": "building",
+    "pattern": [
+        "CC",
+        "CC"
+    ],
+    "key": {
+        "C": { "item": "symmetrycraft:symmetry_crystal" }
+    },
+    "result": {
+        "item": "symmetrycraft:symmetry_crystal_block",
+        "count": 1
+    }
+}

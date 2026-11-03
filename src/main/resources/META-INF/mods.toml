@@ -1,0 +1,28 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="MIT"
+
+[[mods]]
+modId="symmetrycraft"
+version="1.0.0"
+displayName="对称工艺 SymmetryCraft"
+logoFile="assets/symmetrycraft/icon.png"
+authors="fuqing"
+description='''
+独立材质 · 独立UI · 帧数优化。
+一切围绕中轴对称：对称水晶、对称锻炉、对称界面、对称HUD。
+'''
+
+[[dependencies.symmetrycraft]]
+    modId="forge"
+    mandatory=true
+    versionRange="[47,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.symmetrycraft]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.20.1,1.21)"
+    ordering="NONE"
+    side="BOTH"

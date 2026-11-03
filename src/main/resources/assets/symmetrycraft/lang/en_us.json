@@ -1,0 +1,28 @@
+{
+    "itemGroup.symmetrycraft": "SymmetryCraft",
+
+    "block.symmetrycraft.symmetry_crystal_block": "Symmetry Crystal Block",
+    "block.symmetrycraft.symmetry_forge": "Symmetry Forge",
+    "item.symmetrycraft.symmetry_crystal": "Symmetry Crystal",
+
+    "gui.symmetrycraft.slot.input": "Input",
+    "gui.symmetrycraft.slot.crystal": "Core",
+    "gui.symmetrycraft.slot.output": "Mirror",
+    "gui.symmetrycraft.hint": "1 input + 1 crystal = 2 mirrored",
+    "gui.symmetrycraft.optimizer.title": "Symmetry Optimizer",
+    "gui.symmetrycraft.presets.low": "Low-End PC",
+    "gui.symmetrycraft.presets.balanced": "Balanced",
+    "gui.symmetrycraft.presets.high": "High-End PC",
+    "gui.symmetrycraft.option.particle_distance": "Particle cull distance: %s blocks",
+    "gui.symmetrycraft.option.particle_cap": "Particle cap: %s",
+    "gui.symmetrycraft.option.mob_distance": "Mob render distance: %s blocks",
+    "gui.symmetrycraft.option.reduce_fog": "Reduce fog",
+    "gui.symmetrycraft.option.show_hud": "Symmetric HUD",
+    "gui.symmetrycraft.on": "ON",
+    "gui.symmetrycraft.off": "OFF",
+    "gui.symmetrycraft.reset": "Defaults",
+    "gui.symmetrycraft.stats": "Particles culled this session: %s",
+
+    "key.categories.symmetrycraft": "SymmetryCraft",
+    "key.symmetrycraft.open_optimizer": "Open Optimizer"
+}
